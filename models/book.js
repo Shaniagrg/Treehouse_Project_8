@@ -16,10 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   Book.init({
     title: {
       type: DataTypes.STRING,
-      // to prevent value from being set to an eampty string we use notEmpty validator
-      allowNull:false,
+      allowNull:false, //this enforces that the value must exist
       validate:{
-        notEmpty:{
+        notEmpty:{ // to prevent value from being set to an eampty string we use notEmpty validator
           msg: 'Please provide a value for "title"'
         }
       }
