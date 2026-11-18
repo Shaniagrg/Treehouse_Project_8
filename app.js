@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 //Using REQUIRE METHOD import sequelize from the folder models/index.js 
-const {sequelize} = require('./models/index') //use {} to pull out just the sequelize connection instance
+const {sequelize} = require('./models/index'); //use {} to pull out just the sequelize connection instance
 //async lIFE
 ( async () => {
   try{
