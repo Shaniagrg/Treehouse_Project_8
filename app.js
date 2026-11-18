@@ -4,18 +4,24 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-//Using REQUIRE METHOD import sequelize from the folder models/index.js 
-const {sequelize} = require('./models/index'); //use {} to pull out just the sequelize connection instance
-//async lIFE
+//Using REQUIRE METHOD load Sequelize instance and models exported by ./models/index.js
+const db = require('./models'); 
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+
+var app = express();
+
+//async IIFE
 ( async () => {
   try{
     
-    //authenticate() returns a promise that resolves to a successful authenticated connection to database
-    await sequelize.authenticate();
+    //authenticate() returns a promise that resolves to a successful authenticated connection to database (checks if Sequelize connect to database)
+    await db.sequelize.authenticate();
     console.log('Connection to the database successful');
 
     //sync() create the table if it's missing
-    await sequelize.sync();
+    await db.sequelize.sync();
     console.log('Database synced successful')
 
   }catch(error){
@@ -23,11 +29,6 @@ const {sequelize} = require('./models/index'); //use {} to pull out just the seq
     console.error('Error connecting to the database', error);
   }
 }) ();
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
