@@ -44,7 +44,16 @@ app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  const err = new Error(); //create a new Error()
+
+  err.status = 404;
+  err.messgae = 'Sorry! There was an unexpected error on the server'
+
+  console.log(`404 Error: {err.message}`)
+
+  res.status(404);
+  //Render the error template and pass the {err} that you're updating as the second parameter 
+  res.render('page-not-found', {err});
 });
 
 // error handler
