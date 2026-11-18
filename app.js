@@ -44,27 +44,29 @@ app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const err = new Error(); //create a new Error()
+  const error = new Error(); //create a new Error()
 
-  err.status = 404;
-  err.messgae = 'Sorry! There was an unexpected error on the server'
+  error.status = 404;
+  error.message = 'Sorry! the page you are looking for does not exist';
 
-  console.log(`404 Error: {err.message}`)
+  console.log(`404 Error: ${error.message}`)
 
   res.status(404);
+  
+  //Render the page-not-found template and pass the {error} you're creating as the second parameter 
+  res.render('page-not-found', {error});
+});
+
+//Global error handler
+app.use(function(err, req, res, next){
+  err.status = err.status || 500;
+  err.message = err.message || "Sorry! there was an unexpected error on the server.";
+  console.log(`Global Error: Status ${err.status}, Message: ${err.message}`);
+
+  res.status(err.status);
+
   //Render the error template and pass the {err} that you're updating as the second parameter 
-  res.render('page-not-found', {err});
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  res.render('error', {err})
+})
 
 module.exports = app;
