@@ -4,6 +4,26 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//Using REQUIRE METHOD import sequelize from the folder models/index.js 
+const {sequelize} = require('./models/index') //use {} to pull out just the sequelize connection instance
+//async lIFE
+( async () => {
+  try{
+    
+    //authenticate() returns a promise that resolves to a successful authenticated connection to database
+    await sequelize.authenticate();
+    console.log('Connection to the database successful');
+
+    //sync() create the table if it's missing
+    await sequelize.sync();
+    console.log('Database synced successful')
+
+  }catch(error){
+    //it will catch error if something go wrong and tell you the reason why
+    console.error('Error connecting to the database', error);
+  }
+}) ();
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
