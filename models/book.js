@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull:false, //this enforces that the value must exist
       validate:{
+        notNull:{
+          msg: 'Please provide a value for "title"'
+        },
         notEmpty:{ // to prevent value from being set to an eampty string we use notEmpty validator
           msg: 'Please provide a value for "title"'
         }
@@ -27,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull:{
+          msg: 'Please provide value for "author" '
+        },
         notEmpty: {
           msg: 'Please provide value for "author" '
         }
