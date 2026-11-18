@@ -48,8 +48,9 @@ app.use(function(req, res, next) {
   const error = new Error(); //create a new Error()
 
   error.status = 404;
-  error.message = 'Sorry! the page you are looking for does not exist';
+  error.message = "Sorry! We couldn't find the page you were looking for.";
 
+  //will print this message in terminal not in inspect console
   console.log(`404 Error: ${error.message}`)
 
   res.status(404);
