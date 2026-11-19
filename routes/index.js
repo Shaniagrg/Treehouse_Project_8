@@ -71,4 +71,83 @@ router.post('/books/new', async function(req, res, next){
   }
 })
 
+//Update form for one book
+router.get('/books/:id', async function(req,res, next){
+  try{
+    //req.params.id grabd id number 
+    const book = await Book.findByPk(req.params.id);
+
+    //if the book doesn't exist of that ID show 404 page
+    if(!book){
+      const err = new Error('Book not found');
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render('update-book', {
+      book,
+      title: 'Update Book'
+    });
+  }catch(error){
+    next(error)
+  } 
+});
+
+//save the updates
+router.post('/books/:id', async function (req, res, next) {
+  let book;
+  try{
+    book = await Book.findByPk(req.params.id);
+    
+    if(!book){
+      const err = new Error('Book not found');
+      err.status = 404;
+      return next(err);
+    }
+    //use update() and save changes
+    await book.update({
+      title: req.body.title,
+      author: req.body.author,
+      genre: req.body.genre,
+      year: req.body.year
+    });
+
+    res.redirect('/books');
+  }catch(error){
+    //re-render if title or author is blank
+    if (error.name === 'SequelizeValidationError'){
+      return res.status(400).render('update-book',{
+        title: 'Update Book',
+        book: {
+          id: req.params.id,
+          title: req.body.title,
+          author: req.body.author,
+          genre: req.body.genre,
+          year: req.body.year
+        },
+        errors: error.errors
+      })
+    }
+    next(error);
+  }
+});
+
+//delete a book
+router.post('/books/:id/delete', async function(req, res, next){
+  try{
+    const book = await Book.findByPk(req.params.id);
+
+    if(!book){
+      const err = new Error('Book not found');
+      err.status = 404;
+      return next(err);
+    }
+    //use destroy() to remove the row
+    await book.destroy();
+    res.redirect('/books');
+  }catch(error){
+    next(error);
+  }
+})
+
 module.exports = router;
