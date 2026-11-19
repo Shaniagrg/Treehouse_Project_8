@@ -15,14 +15,14 @@ block content
         th Genre 
         th Year 
 
-  tbody 
-    //-loop through every book that has been passed to template
-    each book in books 
-      tr 
-        td 
-          //- automatic generate unique ID and presents on screen /books/5
-          //- book.title gets the title of the particular id
-          a(href=`/books/${book.id}`)= book.title 
-        td= book.author 
-        td= book.genre 
-        td= book.year 
+      tbody 
+        //-loop through every book that has been passed to template
+        each book in books 
+          tr 
+            td 
+              //- automatic generate unique ID and presents on screen /books/5
+              //- book.title gets the title of the particular id
+              a(href=`/books/${book.id}`)= book.title 
+            td= book.author 
+            td= book.genre 
+            td= book.year 
