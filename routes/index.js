@@ -23,7 +23,7 @@ router.get('/books', async function(req, res, next) {
     */
     res.render('index', {
       books,
-      title: 'Library Application'
+      title: 'Books'
     })
   }catch(error){
     next(error);

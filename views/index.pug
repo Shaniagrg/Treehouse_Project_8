@@ -1,5 +1,28 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Books
+  p 
+    //- /books is the main page route
+    //- /books/new is endpoint that will take you to form to add new book (new-book.pug)
+    a.button(href='/books/new') Create New Book
+
+  table 
+    thead 
+      tr 
+        th Title 
+        th Author 
+        th Genre 
+        th Year 
+
+  tbody 
+    //-loop through every book that has been passed to template
+    each book in books 
+      tr 
+        td 
+          //- automatic generate unique ID and presents on screen /books/5
+          //- book.title gets the title of the particular id
+          a(href=`/books/${book.id}`)= book.title 
+        td= book.author 
+        td= book.genre 
+        td= book.year 
