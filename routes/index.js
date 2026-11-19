@@ -8,6 +8,7 @@ router.get('/', function(req, res, next) {
 
 const {Book} = require('../models');  //import book model from models folder
 
+//shows all book
 router.get('/books', async function(req, res, next) {
   try{
     const books = await Book.findAll({
@@ -30,5 +31,44 @@ router.get('/books', async function(req, res, next) {
   }
 });
 
+
+//GET /books/new and display the new book form
+router.get('/books/new', async function(req,res, next){
+  try{
+    res.render('new-book',{
+    book:{},
+    title: 'New Book'
+  });
+  }catch(error){
+    next(error)
+  } 
+});
+
+//POST /books/new
+//save new book to database
+router.post('/books/new', async function(req, res, next){
+  try{
+    //req.body holds data submitted and create() creates a new row
+    await Book.create({
+      title: req.body.title,
+      author: req.body.author,
+      genre: req.body.genre,
+      year: req.body.year
+    });
+
+    //if successful redirect to the book listing
+    res.redirect('/books');
+  }catch(error){
+    //if the input is empty re-render 
+    if (error.name === 'SequelizeValidationError'){
+      return res.status(400).render('new-book',{
+        title: 'New Book',
+        book: req.body,
+        errors: error.errors
+      });
+    }
+    next(error)
+  }
+})
 
 module.exports = router;

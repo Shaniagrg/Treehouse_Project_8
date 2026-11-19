@@ -1,0 +1,38 @@
+extends layout 
+
+block content 
+
+    h1 New Book
+    //- POST request to /books/new
+
+    form(method='post', action='/books/new')
+        //- only runs if POST /books/new passed validation errors from Sequelize
+        if errors   
+            h2.error Oooops! 
+            ul.error    
+                each error in errors 
+                    li= error.message 
+    
+        p 
+            //- (for="title") matches input's #id so clicking Title focus on text box
+            label(for="title") Title 
+            input#title(name="title" type="text" value=book.title)
+
+        p 
+            label(for="author") Author 
+            input#author(name="author" type="text" value=book.author)
+
+        p 
+            label(for="genre") Genre 
+            input#genre(name="genre" type="text" value=book.genre)
+
+        p 
+            label(for="year") Year 
+            input#year(name="year" type="text" value=book.year)
+
+        p 
+            input(type="submit" value="Create New Book")
+
+        p 
+            //- bring back to /books
+            a.button(href='/books') Cancel
